@@ -5,37 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Balance Checker</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
+      * {
+        box-sizing: border-box;
         margin: 0;
-        background-color: #f0f2f5;
+        padding: 0;
       }
-      .container {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(145deg, #000000, #1a1a1a);
+        color: white;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      header {
+        width: 100%;
+        padding: 2rem 0;
         text-align: center;
       }
+
+      header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(to right, #ffffff, #b3b3b3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .main-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 800px;
+      }
+
+      .container {
+        padding: 3rem 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 24px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+      }
+
       .balance {
+        text-align: center;
         font-size: 2rem;
-        color: #2c3e50;
+        color: #ffffff;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         margin: 1rem 0;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 1.5rem;
+        background: transparent;
+      }
+
+      footer a {
+        color: #1abc9c;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+        color: #2ecc71;
+      }
+
+      .balance a {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(145deg, #1abc9c, #2ecc71);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .balance a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 2rem 1rem;
+        }
+
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .balance {
+          font-size: 1.5rem;
+          padding: 1.5rem;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="balance" id="balance">Loading balance...</div>
+    <header>
+      <h1>Dynamic Atomic Asset</h1>
+    </header>
+
+    <div class="main-content">
+      <div class="container">
+        <div class="balance" id="balance">Loading balance...</div>
+      </div>
     </div>
 
+    <footer>
+      <p>
+        Proof of Build! by
+        <a
+          href="https://megabyte.ar.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          >megabyte💫</a
+        >
+      </p>
+    </footer>
+
     <script>
-      let RECIPIENT = "Pw6aamwaKdmlkgKMNLX1ekzvyBPO8r-S4QhIpL34QVw"; // Made variable mutable
+      let RECIPIENT = "ZaAKWgR8h439YU3L57tTQ2iFU2L3jTMGgzr7RHpz6u8"; // Made variable mutable
 
       async function checkBalance() {
         const balanceElement = document.getElementById("balance");
@@ -73,7 +176,15 @@
           if (data.Messages && data.Messages[0] && data.Messages[0].Data) {
             const balance = JSON.parse(data.Messages[0].Data);
             const formattedBalance = parseInt(balance) / 1e18;
-            balanceElement.textContent = `Balance: ${formattedBalance.toLocaleString()} DNT`;
+
+            // Use innerHTML to allow adding HTML content
+            balanceElement.innerHTML = `Balance: ${formattedBalance.toLocaleString()} DNT`;
+
+            // Check if balance is less than 1 and append the message
+            if (formattedBalance < 1) {
+              balanceElement.innerHTML +=
+                "<br> <br> You may request $DNT tokens from megabyte.";
+            }
           } else {
             balanceElement.textContent = "No balance data found";
           }
