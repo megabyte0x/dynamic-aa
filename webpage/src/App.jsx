@@ -3,10 +3,16 @@ import { ConnectButton } from '@arweave-wallet-kit/react'
 import { useActiveAddress } from '@arweave-wallet-kit/react';
 import { aaSteps } from './components/mint';
 import { useState } from 'react';
+import clickSound from './assets/click-sound.mp3';
 
 function App() {
   const address = useActiveAddress();
   const [processId, setProcessId] = useState(null);
+
+  const playSound = () => {
+    const audio = new Audio(clickSound);
+    audio.play().catch(error => console.error('Error playing sound:', error));
+  };
 
   return (
     <div className="container dark">
@@ -15,11 +21,8 @@ function App() {
           <h1 className="title">
             Mint your first Dynamic <span className="highlight">Atomic Asset</span>
           </h1>
-          
-          
-
           <div className="action-section">
-            <ConnectButton />
+            <ConnectButton onClick={playSound} />
             <p className="subtitle">
             {address ? "Click to mint." : "Connect wallet to Mint"}
           </p>
@@ -27,6 +30,7 @@ function App() {
               <button 
                 className="mint-button"
                 onClick={async () => {
+                  playSound();
                   const result = await aaSteps(address);
                   if (result.success) {
                       setProcessId(result.processId);
@@ -34,6 +38,7 @@ function App() {
                   } else {
                       console.log(`Error: ${result.message}`);
                   }
+                  
                 }}
               >
                 Mint NFT
@@ -48,6 +53,7 @@ function App() {
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="bazar-link"
+                  onClick={playSound} 
                 >
                   {processId.slice(0, 6)}...{processId.slice(-4)}
                 </a>
