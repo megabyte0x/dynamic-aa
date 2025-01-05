@@ -1,5 +1,6 @@
 import { createDataItemSigner, message, spawn, result } from "@permaweb/aoconnect";
 import { GATEWAYS, PAGINATORS, CURSORS, assetTags, aaStandard } from "../utils";
+import indexHtml from '../assets/index.html?raw'  // Add this import at the top
 
 
 
@@ -129,6 +130,7 @@ async function runGQLQuery(processId) {
 export async function aaSteps(walletAddress) {
     console.log("Start");
     const signer = createDataItemSigner(globalThis.arweaveWallet);
+    let status = { success: false, processId: null, message: '' };
 
     try {
         // Step 1: Spawn the process
@@ -136,11 +138,16 @@ export async function aaSteps(walletAddress) {
             module: "bkjb55i07GUCUSWROtKK4HU1mBS_X0TyH3M5jMV6aPg",
             scheduler: "fcoN_xJeisVsPXA-trzVAuIiqO3ydLQxM-L4XbrQKzY",
             signer: signer,
-            data: "JPEG_BUFFER",
+            data: indexHtml.replace(
+                /let RECIPIENT = ".*?"/,
+                `let RECIPIENT = "${walletAddress}"`
+            ),
             tags: assetTags(walletAddress),
         });
 
         console.log("Process spawned: ", processId);
+        status.processId = processId;
+        status.message = 'Process spawned successfully';
 
         // Step 2: Poll for process status
         let processFound = false;
@@ -163,8 +170,8 @@ export async function aaSteps(walletAddress) {
 
         // If process not found after retries
         if (!processFound) {
-            console.error("Max retries reached. Process not found in AO.");
-            return null;
+            status.message = 'Process creation failed - timeout';
+            return status;
         }
 
         // Step 3: Execute the message (Evaluation)
@@ -199,10 +206,13 @@ export async function aaSteps(walletAddress) {
 
         console.log("Profile Added:", finalMessage);
 
-        return processId;
+        status.success = true;
+        status.message = 'Process completed successfully';
+        return status;
 
     } catch (error) {
         console.error("Error in aaSteps: ", error.message);
-        return null;
+        status.message = `Error: ${error.message}`;
+        return status;
     }
 }

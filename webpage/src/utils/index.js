@@ -347,7 +347,7 @@ export function assetTags(walletAddress) {
         { name: TAGS.keys.contentType, value: "text/html;charset=utf-8" },
         { name: TAGS.keys.creator, value: walletAddress },
         { name: TAGS.keys.ans110.title, value: "Dynamic AA" },
-        { name: TAGS.keys.ans110.description, value: "Proof of Build!" },
+        { name: TAGS.keys.ans110.description, value: "Proof of Build! by megabyte.ar.io" },
         { name: TAGS.keys.dateCreated, value: date },
         { name: 'Action', value: 'Add-Uploaded-Asset' },
     ];
