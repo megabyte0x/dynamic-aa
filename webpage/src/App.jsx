@@ -8,6 +8,7 @@ import clickSound from './assets/click-sound.mp3';
 function App() {
   const address = useActiveAddress();
   const [processId, setProcessId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const playSound = () => {
     const audio = new Audio(clickSound);
@@ -31,17 +32,19 @@ function App() {
                 className="mint-button"
                 onClick={async () => {
                   playSound();
+                  setLoading(true);
                   const result = await aaSteps(address);
+                  setLoading(false);
                   if (result.success) {
                       setProcessId(result.processId);
                       console.log(`Process ${result.processId} completed: ${result.message}`);
                   } else {
                       console.log(`Error: ${result.message}`);
                   }
-                  
                 }}
+                disabled={loading}
               >
-                Mint NFT
+                {loading ? "Minting..." : "Mint NFT"}
               </button>
             )}
 

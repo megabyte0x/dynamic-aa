@@ -111,14 +111,14 @@ body, html {
 
 .bazar-link {
   display: inline-block;
-  padding: 8px 24px;
-  background: linear-gradient(145deg, #007bff, #0056b3);
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(145deg, #1abc9c, #2ecc71);
   color: white;
   text-decoration: none;
   border-radius: 8px;
   font-family: monospace;
-  margin-top: 0.5rem;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -127,7 +127,7 @@ body, html {
 
 .bazar-link:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
 }
 
 @media screen and (max-width: 768px) {
