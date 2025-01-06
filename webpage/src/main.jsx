@@ -8,6 +8,7 @@ import ArConnectStrategy from "@arweave-wallet-kit/arconnect-strategy";
 import OthentStrategy from "@arweave-wallet-kit/othent-strategy";
 import BrowserWalletStrategy from "@arweave-wallet-kit/browser-wallet-strategy";
 import WebWalletStrategy from "@arweave-wallet-kit/webwallet-strategy";
+import { Analytics } from "@vercel/analytics/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       }}
     >
       <App />
+      <Analytics />
     </ArweaveWalletKit>
   </React.StrictMode>
 );

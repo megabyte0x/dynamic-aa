@@ -20,6 +20,7 @@
     "@arweave-wallet-kit/styles": "^0.1.0",
     "@arweave-wallet-kit/webwallet-strategy": "^0.0.1-beta.4",
     "@permaweb/aoconnect": "^0.0.62",
+    "@vercel/analytics": "^1.4.1",
     "arweave-wallet-kit": "^1.0.8",
     "arweavekit": "^1.5.1",
     "react": "^18.3.1",
